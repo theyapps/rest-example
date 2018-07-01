@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sy:switchyard xmlns:bean="urn:switchyard-component-bean:config:2.0" xmlns:resteasy="urn:switchyard-component-resteasy:config:2.0" xmlns:sca="http://docs.oasis-open.org/ns/opencsa/sca/200912" xmlns:sy="urn:switchyard-config:switchyard:2.0" name="rest-example" targetNamespace="urn:com.theyapps:rest-example:1.0">
+  <sca:composite name="rest-example" targetNamespace="urn:com.theyapps:rest-example:1.0">
+    <sca:component name="PhoneBookServiceBean">
+      <bean:implementation.bean class="com.theyapps.rest_example.PhoneBookServiceBean"/>
+      <sca:service name="PhoneBookService">
+        <sca:interface.java interface="com.theyapps.rest_example.PhoneBookService"/>
+      </sca:service>
+    </sca:component>
+    <sca:service name="PhoneBookRestService" promote="PhoneBookServiceBean/PhoneBookService">
+      <sca:interface.java interface="com.theyapps.rest_example.PhoneBookService"/>
+      <resteasy:binding.rest name="PhonebookRestInterface">
+        <resteasy:interfaces>com.theyapps.rest_example.PhoneBookResource</resteasy:interfaces>
+        <resteasy:contextPath>app</resteasy:contextPath>
+      </resteasy:binding.rest>
+    </sca:service>
+  </sca:composite>
+</sy:switchyard>
