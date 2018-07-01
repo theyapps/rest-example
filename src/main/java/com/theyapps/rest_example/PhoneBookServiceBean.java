@@ -62,5 +62,18 @@ public class PhoneBookServiceBean implements PhoneBookService {
 		return result;
 	}
 
+	@Override
+	public PhoneBookRecord updatePhoneBookRecord(PhoneBookRecord record) {
+		PhoneBookRecord result = phonebookMap.get(record.getId());
+		
+		if(result != null) {
+			result.setFirstName(record.getFirstName());
+			result.setLastName(record.getLastName());
+			result.setPhoneNumber(record.getPhoneNumber());
+		}
+		
+		return result;
+	}
+
 
 }

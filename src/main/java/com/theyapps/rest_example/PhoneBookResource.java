@@ -6,11 +6,17 @@ import javax.xml.ws.Response;
 
 @Path("/phonebook")
 public interface PhoneBookResource {
-	@POST
+	@PUT
 	@Path("/")
 	@Consumes({"application/json"})
 	@Produces({ "application/json" })
 	public PhoneBookRecord newPhoneBookRecord(PhoneBookRecord record);
+	
+	@POST
+	@Path("/")
+	@Consumes({"application/json"})
+	@Produces({ "application/json" })
+	public PhoneBookRecord updatePhoneBookRecord(PhoneBookRecord record);
 	
 	@GET
 	@Path("/")
