@@ -9,14 +9,14 @@ public interface PhoneBookResource {
 	@PUT
 	@Path("/")
 	@Consumes({"application/json"})
-	@Produces({ "application/json" })
-	public PhoneBookRecord newPhoneBookRecord(PhoneBookRecord record);
+	@Produces({"application/json"})
+	public ResultRecord newPhoneBookRecord(PhoneBookRecord record);
 	
 	@POST
 	@Path("/")
 	@Consumes({"application/json"})
-	@Produces({ "application/json" })
-	public PhoneBookRecord updatePhoneBookRecord(PhoneBookRecord record);
+	@Produces({"application/json"})
+	public ResultRecord updatePhoneBookRecord(PhoneBookRecord record);
 	
 	@GET
 	@Path("/")
@@ -31,6 +31,6 @@ public interface PhoneBookResource {
 	@DELETE
     @Path("{phonebookId}")
     @Produces({"application/json"})
-    public PhoneBookRecord deletePhoneBookRecord(@PathParam("phonebookId") Long recordId);
+    public ResultRecord deletePhoneBookRecord(@PathParam("phonebookId") Long recordId);
 	
 }

@@ -21,36 +21,42 @@ public class PhoneBookServiceBean implements PhoneBookService {
     @Reference("DBInsertService")
 	private DBService insertDB;
 	
+	@Inject
+    @Reference("DBDeleteService")
+	private DBService deleteDB;
+
 	public PhoneBookServiceBean() {
 		LOG.info("Creating PhoneBookService");
 		
 		// Adding some dummy data
-		LOG.info("Populating dummy data");
+		/*LOG.info("Populating dummy data");
 		
-		/*phonebookMap.put(id, new PhoneBookRecord(id++, "John", "Doe", "555-656-8845"));
+		phonebookMap.put(id, new PhoneBookRecord(id++, "John", "Doe", "555-656-8845"));
 		phonebookMap.put(id, new PhoneBookRecord(id++, "Jane", "Doe", "555-656-4545"));
 		phonebookMap.put(id, new PhoneBookRecord(id++, "Steve", "Smith", "555-985-4582"));
 		phonebookMap.put(id, new PhoneBookRecord(id++, "Joe", "Brown", "555-545-4569"));
 		phonebookMap.put(id, new PhoneBookRecord(id++, "Bob", "Black", "555-656-2157"));*/
+
 	}
 	
 	@Override
 	public void consume(PhoneBookRecord record) {
-		LOG.info("Consuming record " + record.getId());
-		phonebookMap.put(record.getId(), record);
+		if(!phonebookMap.containsKey(record.getId())) {
+			LOG.info("Consuming record " + record.getId());
+			phonebookMap.put(record.getId(), record);
+		}		
 	}
 
 	@Override
-	public PhoneBookRecord newPhoneBookRecord(PhoneBookRecord record) {
+	public ResultRecord newPhoneBookRecord(PhoneBookRecord record) {
 		PhoneBookRecord result = null;
 		if(record != null) {
-			result = new PhoneBookRecord(id++, record.getFirstname(), record.getLastname(), record.getPhonenumber());
-			phonebookMap.put(result.getId(), result);
 			insertDB.execute(record);
-			LOG.info("Added a new record " + result.toString());
+			LOG.info("Added a new record " + record.toString());
+			return ResultRecord.SUCCESS;
 		}
 		
-		return result;
+		return ResultRecord.ERROR;
 	}
 
 	@Override 
@@ -70,22 +76,29 @@ public class PhoneBookServiceBean implements PhoneBookService {
 	}
 
 	@Override
-	public PhoneBookRecord deletePhoneBookRecord(Long recordId) {
+	public ResultRecord deletePhoneBookRecord(Long recordId) {
 		PhoneBookRecord result = phonebookMap.get(recordId);
-		phonebookMap.remove(recordId);
-		return result;
+		
+		if(result != null) {
+			phonebookMap.remove(recordId);
+			deleteDB.execute(result);
+			return ResultRecord.SUCCESS;
+		}
+		
+		return ResultRecord.ERROR;
 	}
 
 	@Override
-	public PhoneBookRecord updatePhoneBookRecord(PhoneBookRecord record) {
+	public ResultRecord updatePhoneBookRecord(PhoneBookRecord record) {
 		PhoneBookRecord result = phonebookMap.get(record.getId());
 		
 		if(result != null) {
 			result.setFirstname(record.getFirstname());
 			result.setLastname(record.getLastname());
 			result.setPhonenumber(record.getPhonenumber());
+			return ResultRecord.SUCCESS;
 		}
 		
-		return result;
+		return ResultRecord.ERROR;
 	}
 }

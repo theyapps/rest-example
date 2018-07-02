@@ -9,6 +9,9 @@
       <sca:reference name="DBInsertService">
         <sca:interface.java interface="com.theyapps.rest_example.DBService"/>
       </sca:reference>
+      <sca:reference name="DBDeleteService">
+        <sca:interface.java interface="com.theyapps.rest_example.DBService"/>
+      </sca:reference>
     </sca:component>
     <sca:service name="PhoneBookRestService" promote="PhoneBookServiceBean/PhoneBookService">
       <sca:interface.java interface="com.theyapps.rest_example.PhoneBookService"/>
@@ -26,6 +29,13 @@
       <sca:interface.java interface="com.theyapps.rest_example.DBService"/>
       <sql:binding.sql name="InsertSql">
         <sql:query>INSERT INTO phonebook(firstname, lastname, phonenumber,id) VALUES (#,#,#,#);</sql:query>
+        <sql:dataSourceRef>java:jboss/datasources/PhonebookDS</sql:dataSourceRef>
+      </sql:binding.sql>
+    </sca:reference>
+    <sca:reference name="DBDeleteService" multiplicity="0..1" promote="PhoneBookServiceBean/DBDeleteService">
+      <sca:interface.java interface="com.theyapps.rest_example.DBService"/>
+      <sql:binding.sql name="DeleteSql">
+        <sql:query>DELETE FROM phonebook WHERE firstname = # AND lastname = # AND phonenumber= # AND id = #</sql:query>
         <sql:dataSourceRef>java:jboss/datasources/PhonebookDS</sql:dataSourceRef>
       </sql:binding.sql>
     </sca:reference>
