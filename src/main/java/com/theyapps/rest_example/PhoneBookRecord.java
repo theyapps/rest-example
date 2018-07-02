@@ -3,36 +3,37 @@ package com.theyapps.rest_example;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
+import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.annotate.JsonPropertyOrder;
 import org.codehaus.jackson.map.annotate.*;
 
 @JsonRootName(value = "PhoneBookRecord")
-@JsonPropertyOrder({"id","firstName","lastName","phoneNumber"})
+@JsonPropertyOrder({"id","firstname","lastname","phonenumber"})
 //@XmlRootElement()
-//@XmlType (propOrder={"id","firstName","lastName","phoneNumber"})
+//@XmlType (propOrder={"id","firstname","lastname","phonenumber"})
 public class PhoneBookRecord {
 	private Long id;
-	private String firstName;
-	private String lastName;
-	private String phoneNumber;
+	private String firstname;
+	private String lastname;
+	private String phonenumber;
 	
 	public PhoneBookRecord() {
 		super();
 	}
 
-	public PhoneBookRecord(Long id, String firstName, String lastName, String phoneNumber) {
+	public PhoneBookRecord(Long id, String firstname, String lastname, String phonenumber) {
 		super();
 		this.id = id;
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.phoneNumber = phoneNumber;
+		this.firstname = firstname;
+		this.lastname = lastname;
+		this.phonenumber = phonenumber;
 	}
 	
-	public PhoneBookRecord(String firstName, String lastName, String phoneNumber) {
+	public PhoneBookRecord(String firstname, String lastname, String phonenumber) {
 		super();
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.phoneNumber = phoneNumber;
+		this.firstname = firstname;
+		this.lastname = lastname;
+		this.phonenumber = phonenumber;
 	}
 
 	/**
@@ -51,48 +52,48 @@ public class PhoneBookRecord {
 	}
 
 	/**
-	 * @return the firstName
+	 * @return the firstname
 	 */
-	public String getFirstName() {
-		return firstName;
+	public String getFirstname() {
+		return firstname;
 	}
 
 	/**
-	 * @param firstName
-	 *            the firstName to set
+	 * @param firstname
+	 *            the firstname to set
 	 */
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
+	public void setFirstname(String firstname) {
+		this.firstname = firstname;
 	}
 
 	/**
-	 * @return the lastName
+	 * @return the lastname
 	 */
-	public String getLastName() {
-		return lastName;
+	public String getLastname() {
+		return lastname;
 	}
 
 	/**
-	 * @param lastName
-	 *            the lastName to set
+	 * @param lastname
+	 *            the lastname to set
 	 */
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
+	public void setLastname(String lastname) {
+		this.lastname = lastname;
 	}
 
 	/**
-	 * @return the phoneNumber
+	 * @return the phonenumber
 	 */
-	public String getPhoneNumber() {
-		return phoneNumber;
+	public String getPhonenumber() {
+		return phonenumber;
 	}
 
 	/**
-	 * @param phoneNumber
-	 *            the phoneNumber to set
+	 * @param phonenumber
+	 *            the phonenumber to set
 	 */
-	public void setPhoneNumber(String phoneNumber) {
-		this.phoneNumber = phoneNumber;
+	public void setPhonenumber(String phonenumber) {
+		this.phonenumber = phonenumber;
 	}
 
 	/* (non-Javadoc)
@@ -100,8 +101,8 @@ public class PhoneBookRecord {
 	 */
 	@Override
 	public String toString() {
-		return "PhoneBookRecord [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", phoneNumber="
-				+ phoneNumber + "]";
+		return "PhoneBookRecord [id=" + id + ", firstname=" + firstname + ", lastname=" + lastname + ", phonenumber="
+				+ phonenumber + "]";
 	}
 
 }

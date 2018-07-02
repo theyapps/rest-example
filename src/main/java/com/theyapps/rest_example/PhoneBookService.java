@@ -6,4 +6,6 @@ public interface PhoneBookService {
 	public PhoneBookRecord getPhoneBookRecord(Long recordId);
 	public PhoneBookRecordList getPhoneBookRecordList();
 	public PhoneBookRecord deletePhoneBookRecord(Long recordId);
+	
+	public void consume(PhoneBookRecord record);
 }
