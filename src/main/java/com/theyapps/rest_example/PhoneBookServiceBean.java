@@ -1,5 +1,7 @@
 package com.theyapps.rest_example;
 
+import java.sql.SQLException;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -7,36 +9,45 @@ import java.util.concurrent.ConcurrentMap;
 import org.apache.log4j.Logger;
 import org.switchyard.component.bean.Service;
 
+import com.theyapps.rest_example.db.DatabaseConnection;
+
 @Service(PhoneBookService.class)
 public class PhoneBookServiceBean implements PhoneBookService {
-	Logger LOG = Logger.getLogger(PhoneBookService.class);
+	private static Logger LOG = Logger.getLogger(PhoneBookService.class);
 	
 	static long id = 0;
 	private static ConcurrentMap<Long, PhoneBookRecord> phonebookMap = new ConcurrentHashMap<>();
+	private static DatabaseConnection dbConn;
 	
 	public PhoneBookServiceBean() {
 		LOG.info("Creating PhoneBookService");
 		
-		// Adding some dummy data
-		LOG.info("Populating dummy data");
-		
-		phonebookMap.put(id, new PhoneBookRecord(id++, "John", "Doe", "555-656-8845"));
-		phonebookMap.put(id, new PhoneBookRecord(id++, "Jane", "Doe", "555-656-4545"));
-		phonebookMap.put(id, new PhoneBookRecord(id++, "Steve", "Smith", "555-985-4582"));
-		phonebookMap.put(id, new PhoneBookRecord(id++, "Joe", "Brown", "555-545-4569"));
-		phonebookMap.put(id, new PhoneBookRecord(id++, "Bob", "Black", "555-656-2157"));
+		try {
+			dbConn = new DatabaseConnection();
+			
+			Collection<PhoneBookRecord> records = dbConn.getPhonebookRecords();
+			for(PhoneBookRecord record : records) {
+				phonebookMap.put(record.getId(), record);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Override
-	public PhoneBookRecord newPhoneBookRecord(PhoneBookRecord record) {
+	public ResultRecord newPhoneBookRecord(PhoneBookRecord record) {
 		PhoneBookRecord result = null;
 		if(record != null) {
-			result = new PhoneBookRecord(id++, record.getFirstName(), record.getLastName(), record.getPhoneNumber());
-			phonebookMap.put(result.getId(), result);
-			LOG.info("Added a new record " + result.toString());
+			//result = new PhoneBookRecord(id++, record.getFirstName(), record.getLastName(), record.getPhoneNumber());
+			result = dbConn.newPhonebookRecord(record);
+			if(result != null) {
+				phonebookMap.put(result.getId(), result);
+				LOG.info("Added a new record " + result.toString());
+			}
 		}
 		
-		return result;
+		return result != null ? ResultRecord.SUCCESS : ResultRecord.ERROR;
 	}
 
 	@Override 
@@ -56,23 +67,32 @@ public class PhoneBookServiceBean implements PhoneBookService {
 	}
 
 	@Override
-	public PhoneBookRecord deletePhoneBookRecord(Long recordId) {
+	public ResultRecord deletePhoneBookRecord(Long recordId) {
+		boolean success = false;
+		
 		PhoneBookRecord result = phonebookMap.get(recordId);
-		phonebookMap.remove(recordId);
-		return result;
+		if(result != null) {
+			success = dbConn.deletePhonebookRecord(result);
+			phonebookMap.remove(recordId);
+		}
+		
+		return success ? ResultRecord.SUCCESS : ResultRecord.ERROR;
 	}
 
 	@Override
-	public PhoneBookRecord updatePhoneBookRecord(PhoneBookRecord record) {
+	public ResultRecord updatePhoneBookRecord(PhoneBookRecord record) {
 		PhoneBookRecord result = phonebookMap.get(record.getId());
+		boolean success = false;
 		
 		if(result != null) {
+			success = dbConn.updatePhonebookRecord(result, record);
+			
 			result.setFirstName(record.getFirstName());
 			result.setLastName(record.getLastName());
-			result.setPhoneNumber(record.getPhoneNumber());
+			result.setPhoneNumber(record.getPhoneNumber());	
 		}
 		
-		return result;
+		return success ? ResultRecord.SUCCESS : ResultRecord.ERROR;
 	}
 
 
