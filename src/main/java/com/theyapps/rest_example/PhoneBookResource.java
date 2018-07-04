@@ -24,13 +24,13 @@ public interface PhoneBookResource {
 	public PhoneBookRecordList getPhoneBookRecordList();
 	
 	@GET
-    @Path("{phonebookId}")
-    @Produces({"application/json"})
-    public PhoneBookRecord getPhoneBookRecord(@PathParam("phonebookId") Long recordId);
+    	@Path("{phonebookId}")
+    	@Produces({"application/json"})
+    	public PhoneBookRecord getPhoneBookRecord(@PathParam("phonebookId") Long recordId);
 	
 	@DELETE
-    @Path("{phonebookId}")
-    @Produces({"application/json"})
-    public PhoneBookRecord deletePhoneBookRecord(@PathParam("phonebookId") Long recordId);
+    	@Path("{phonebookId}")
+    	@Produces({"application/json"})
+    	public PhoneBookRecord deletePhoneBookRecord(@PathParam("phonebookId") Long recordId);
 	
 }
